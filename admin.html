@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>관리자 · COMOS</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23FFD400'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%23111'/%3E%3C/svg%3E">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root { --bg: #0b0b11; --card: #14141d; --card2: #1b1b27; --line: #272738; --text: #ececf3; --muted: #9a9ab0; --y: #FFD400; --p: #FF2D75; --ok: #3ddc84; --warn: #ffb020; --bad: #ff5a5f;
+    --font: 'Pretendard', 'Noto Sans KR', 'Malgun Gothic', system-ui, sans-serif; }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--font); font-size: 14.5px; -webkit-font-smoothing: antialiased; }
+  button, input, select, textarea { font: inherit; color: inherit; }
+  a { color: inherit; }
+  header { display: flex; align-items: center; gap: 14px; padding: 14px 24px; border-bottom: 1px solid var(--line); background: #08080c; position: sticky; top: 0; z-index: 5; }
+  .logo { font-weight: 900; display: flex; align-items: center; gap: 10px; }
+  .logo i { width: 28px; height: 28px; border-radius: 8px; background: var(--y); }
+  .tabs { display: flex; gap: 4px; margin-left: 16px; }
+  .tabs button { border: 0; background: none; padding: 8px 14px; border-radius: 10px; color: var(--muted); font-weight: 800; cursor: pointer; }
+  .tabs button.on { background: var(--card2); color: var(--text); box-shadow: inset 0 -2px 0 var(--y); }
+  .tabs .cnt { background: var(--p); color: #fff; border-radius: 99px; font-size: 11px; padding: 0 7px; margin-left: 4px; }
+  .sp { flex: 1; }
+  main { padding: 22px 24px 60px; max-width: 1280px; margin: 0 auto; }
+  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 10px; border: 1px solid var(--line); background: var(--card2); font-weight: 800; cursor: pointer; white-space: nowrap; }
+  .btn:hover { filter: brightness(1.15); }
+  .btn.ok { background: var(--ok); color: #062; border-color: var(--ok); }
+  .btn.bad { color: var(--bad); }
+  .btn.y { background: var(--y); color: #141414; border-color: var(--y); }
+  .btn.sm { padding: 5px 10px; font-size: 13px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 20px; margin-bottom: 16px; }
+  .card h2 { margin: 0 0 12px; font-size: 17px; }
+  .muted { color: var(--muted); }
+  .kpis { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; margin-bottom: 16px; }
+  .kpis div { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; }
+  .kpis b { display: block; font-size: 26px; }
+  .kpis span { color: var(--muted); font-size: 12.5px; font-weight: 700; }
+  .filters { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; align-items: center; }
+  .filters button { border: 1px solid var(--line); background: var(--card); color: var(--muted); padding: 6px 12px; border-radius: 99px; font-weight: 800; cursor: pointer; }
+  .filters button.on { color: #141414; background: var(--y); border-color: var(--y); }
+  .filters input { margin-left: auto; background: #0e0e15; border: 1px solid var(--line); border-radius: 10px; padding: 7px 12px; min-width: 220px; }
+  table { width: 100%; border-collapse: collapse; }
+  th { text-align: left; color: var(--muted); font-size: 12.5px; font-weight: 800; padding: 8px 10px; border-bottom: 1px solid var(--line); }
+  td { padding: 11px 10px; border-bottom: 1px solid #1f1f2c; vertical-align: top; }
+  tr:hover td { background: rgba(255,255,255,.02); }
+  .who { display: flex; gap: 10px; align-items: center; }
+  .who img { width: 36px; height: 36px; border-radius: 50%; background: #333; }
+  .who b { display: block; }
+  .who span { color: var(--muted); font-size: 12.5px; }
+  .app { font-size: 13.5px; line-height: 1.5; max-width: 340px; }
+  .app i { font-style: normal; color: var(--muted); }
+  .st { font-size: 12px; font-weight: 900; padding: 3px 9px; border-radius: 99px; border: 1px solid var(--line); white-space: nowrap; }
+  .st.pending { color: var(--warn); border-color: rgba(255,176,32,.45); }
+  .st.approved { color: var(--ok); border-color: rgba(61,220,132,.45); }
+  .st.rejected, .st.blocked { color: var(--bad); border-color: rgba(255,90,95,.45); }
+  .acts { display: flex; gap: 6px; flex-wrap: wrap; }
+  select, .in { background: #0e0e15; border: 1px solid var(--line); border-radius: 9px; padding: 6px 9px; }
+  .memo { width: 100%; min-width: 140px; }
+  .plans { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; }
+  .plan { background: var(--card2); border: 1px solid var(--line); border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+  .plan label, .form label { display: flex; flex-direction: column; gap: 5px; font-size: 12.5px; font-weight: 800; color: #cfcfe0; }
+  .plan .row, .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .plan .feat { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 13.5px; }
+  .plan input[type=checkbox], .form input[type=checkbox] { width: 17px; height: 17px; accent-color: var(--y); }
+  .form { display: flex; flex-direction: column; gap: 14px; max-width: 620px; }
+  .form .in, .form textarea { width: 100%; background: #0e0e15; border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; }
+  .center { min-height: 70vh; display: grid; place-items: center; text-align: center; }
+  .gbtn { display: inline-flex; align-items: center; gap: 10px; padding: 12px 22px; border-radius: 12px; background: #fff; color: #222; font-weight: 800; border: 0; cursor: pointer; }
+  #toast { position: fixed; left: 50%; bottom: 26px; transform: translateX(-50%) translateY(20px); background: #222233; border: 1px solid #3a3a55; padding: 10px 18px; border-radius: 12px; font-weight: 800; opacity: 0; transition: .25s; pointer-events: none; }
+  #toast.on { opacity: 1; transform: translateX(-50%); }
+  @media (max-width: 900px) { .kpis { grid-template-columns: repeat(2, 1fr); } .tabs { overflow-x: auto; } td:nth-child(3) { display: none; } }
+</style>
+</head>
+<body>
+<header>
+  <div class="logo"><i></i>COMOS 관리자</div>
+  <nav class="tabs" id="tabs" hidden>
+    <button data-t="apps" class="on">가입 신청 <span class="cnt" id="cnt-pending" hidden></span></button>
+    <button data-t="members">회원·플랜</button>
+    <button data-t="plans">요금제 설정</button>
+    <button data-t="site">사이트 설정</button>
+  </nav>
+  <span class="sp"></span>
+  <a class="btn sm" href="index.html">사이트 보기</a>
+  <button class="btn sm" id="btn-out" hidden>로그아웃</button>
+</header>
+<main>
+  <div id="gate" class="center"><div><h2>관리자 로그인</h2><p class="muted">관리자 구글 계정으로 로그인해 주세요.</p><button class="gbtn" id="btn-in">구글로 로그인</button><p class="muted" id="gate-msg"></p></div></div>
+
+  <section id="t-apps" hidden>
+    <div class="kpis"><div><b id="k-pending">0</b><span>승인 대기</span></div><div><b id="k-approved">0</b><span>승인된 회원</span></div><div><b id="k-rejected">0</b><span>거절</span></div><div><b id="k-total">0</b><span>전체 가입자</span></div><div><b id="k-today">0</b><span>오늘 신청</span></div></div>
+    <div class="card">
+      <div class="filters" id="app-filter">
+        <button data-f="pending" class="on">승인 대기</button><button data-f="approved">승인됨</button><button data-f="rejected">거절</button><button data-f="blocked">정지</button><button data-f="none">신청 전 로그인</button><button data-f="all">전체</button>
+        <input id="q" placeholder="이름·이메일·틱톡 아이디 검색">
+      </div>
+      <table><thead><tr><th>회원</th><th>신청 내용</th><th>신청·최근 접속</th><th>상태</th><th>처리</th></tr></thead><tbody id="app-rows"></tbody></table>
+      <p class="muted" id="app-empty" hidden style="text-align:center;padding:24px">해당하는 사람이 없어요</p>
+    </div>
+  </section>
+
+  <section id="t-members" hidden>
+    <div class="card">
+      <h2>승인된 회원 · 플랜 배정</h2>
+      <table><thead><tr><th>회원</th><th>틱톡</th><th>플랜</th><th>상태</th><th>메모</th><th></th></tr></thead><tbody id="mem-rows"></tbody></table>
+    </div>
+  </section>
+
+  <section id="t-plans" hidden>
+    <div class="card">
+      <div class="row" style="margin-bottom:12px"><h2 style="margin:0">요금제</h2><span class="sp"></span><label class="row" style="font-size:13px;font-weight:800">새 회원 기본 플랜 <select id="def-plan"></select></label><button class="btn sm" id="btn-plan-add">+ 플랜 추가</button><button class="btn y" id="btn-plans-save">저장</button></div>
+      <p class="muted" style="margin-top:0">여기서 바꾼 내용이 사이트 요금제 표와 프로그램 안의 기능 잠금에 바로 반영돼요. 지금은 결제 없이 회원에게 직접 배정해요.</p>
+      <div class="plans" id="plan-edit"></div>
+    </div>
+  </section>
+
+  <section id="t-site" hidden>
+    <div class="card">
+      <h2>사이트 설정</h2>
+      <div class="form">
+        <label class="row" style="flex-direction:row"><input type="checkbox" id="s-invite"> 지인 초대제 (승인한 사람만 프로그램 사용)</label>
+        <label class="row" style="flex-direction:row"><input type="checkbox" id="s-signup"> 가입 신청 받기</label>
+        <label>상단 공지 (비우면 안 보임)<input class="in" id="s-notice" placeholder="예: 11월 정식 오픈 예정!"></label>
+        <label>프로그램 다운로드 링크 (승인된 회원에게만 보여요)<input class="in" id="s-download" placeholder="https://..."></label>
+        <div><button class="btn y" id="btn-site-save">저장</button></div>
+      </div>
+    </div>
+  </section>
+</main>
+<div id="toast"></div>
+
+<script type="module">
+import { load, onUser, signIn, signOut, isAdmin, getConfig, DEFAULT_PLANS, DEFAULT_SITE, FEATURES, STATUS, esc, fmtDate } from './fb.js';
+const $ = (s) => document.querySelector(s);
+const $$ = (s) => [...document.querySelectorAll(s)];
+let fb, users = [], plans = structuredClone(DEFAULT_PLANS), filter = 'pending', unsub = null;
+const toast = (m) => { const t = $('#toast'); t.textContent = m; t.classList.add('on'); clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove('on'), 2000); };
+
+$$('#tabs button').forEach((b) => b.onclick = () => {
+  $$('#tabs button').forEach((x) => x.classList.toggle('on', x === b));
+  ['apps', 'members', 'plans', 'site'].forEach((k) => { $(`#t-${k}`).hidden = k !== b.dataset.t; });
+});
+$('#btn-in').onclick = async () => { try { await signIn(); } catch (e) { $('#gate-msg').textContent = e.code || e.message; } };
+$('#btn-out').onclick = () => signOut();
+
+const planName = (id) => plans.plans.find((p) => p.id === id)?.name || id || '-';
+const statusOf = (u) => u.status || 'none';
+
+function renderApps() {
+  const q = $('#q').value.trim().toLowerCase();
+  const today = new Date().toDateString();
+  const cnt = (s) => users.filter((u) => statusOf(u) === s).length;
+  $('#k-pending').textContent = cnt('pending'); $('#k-approved').textContent = cnt('approved'); $('#k-rejected').textContent = cnt('rejected');
+  $('#k-total').textContent = users.length;
+  $('#k-today').textContent = users.filter((u) => u.appliedAt?.toDate && u.appliedAt.toDate().toDateString() === today).length;
+  const pc = cnt('pending'); $('#cnt-pending').textContent = pc; $('#cnt-pending').hidden = !pc;
+  const list = users.filter((u) => (filter === 'all' || statusOf(u) === filter) && (!q || [u.name, u.email, u.application?.tiktok, u.application?.nickname].join(' ').toLowerCase().includes(q)))
+    .sort((a, b) => (b.appliedAt?.seconds || b.createdAt?.seconds || 0) - (a.appliedAt?.seconds || a.createdAt?.seconds || 0));
+  $('#app-empty').hidden = list.length > 0;
+  $('#app-rows').innerHTML = list.map((u) => {
+    const a = u.application || {};
+    const st = statusOf(u);
+    return `<tr data-uid="${u.id}">
+      <td><div class="who"><img src="${esc(u.photo)}" onerror="this.style.visibility='hidden'"><div><b>${esc(u.name || '(이름 없음)')}</b><span>${esc(u.email)}</span></div></div></td>
+      <td class="app">${a.tiktok ? `<div>틱톡 <b>@${esc(a.tiktok)}</b>${a.nickname ? ` · ${esc(a.nickname)}` : ''}</div><div><i>소개:</i> ${esc(a.referrer || '-')}</div>${a.message ? `<div><i>한마디:</i> ${esc(a.message)}</div>` : ''}` : '<span class="muted">신청서 없음 (로그인만 함)</span>'}</td>
+      <td class="muted" style="font-size:12.5px">신청 ${fmtDate(u.appliedAt)}<br>접속 ${fmtDate(u.lastLoginAt)}</td>
+      <td><span class="st ${st}">${STATUS[st] || '미신청'}</span>${u.plan ? `<div class="muted" style="font-size:12px;margin-top:4px">${esc(planName(u.plan))}</div>` : ''}</td>
+      <td><div class="acts">
+        ${st !== 'approved' ? '<button class="btn sm ok" data-act="approve">승인</button>' : ''}
+        ${st === 'pending' ? '<button class="btn sm bad" data-act="reject">거절</button>' : ''}
+        ${st === 'approved' ? '<button class="btn sm bad" data-act="block">정지</button>' : ''}
+        ${st === 'blocked' || st === 'rejected' ? '<button class="btn sm" data-act="pending">대기로</button>' : ''}
+      </div></td></tr>`;
+  }).join('');
+}
+
+function renderMembers() {
+  const list = users.filter((u) => ['approved', 'blocked'].includes(statusOf(u)) || isAdmin({ uid: u.id }));
+  $('#mem-rows').innerHTML = list.map((u) => `<tr data-uid="${u.id}">
+    <td><div class="who"><img src="${esc(u.photo)}" onerror="this.style.visibility='hidden'"><div><b>${esc(u.name || '')}${isAdmin({ uid: u.id }) ? ' 👑' : ''}</b><span>${esc(u.email)}</span></div></div></td>
+    <td>${u.application?.tiktok ? `@${esc(u.application.tiktok)}` : '-'}</td>
+    <td><select data-plan>${plans.plans.map((p) => `<option value="${esc(p.id)}" ${p.id === (u.plan || plans.defaultPlan) ? 'selected' : ''}>${esc(p.name)}</option>`).join('')}</select></td>
+    <td><span class="st ${statusOf(u)}">${STATUS[statusOf(u)] || '-'}</span></td>
+    <td><input class="in memo" data-memo value="${esc(u.adminMemo || '')}" placeholder="메모"></td>
+    <td><div class="acts">${statusOf(u) === 'blocked' ? '<button class="btn sm ok" data-act="approve">해제</button>' : isAdmin({ uid: u.id }) ? '' : '<button class="btn sm bad" data-act="block">정지</button>'}</div></td></tr>`).join('');
+}
+
+async function setUser(uid, patch, msg) {
+  const { F, db } = fb;
+  try { await F.updateDoc(F.doc(db, 'users', uid), patch); if (msg) toast(msg); }
+  catch (e) { toast(`실패: ${e.code || e.message}`); }
+}
+document.addEventListener('click', (e) => {
+  const b = e.target.closest('[data-act]'); if (!b) return;
+  const uid = b.closest('tr').dataset.uid; const { F } = fb;
+  const act = b.dataset.act;
+  if (act === 'approve') setUser(uid, { status: 'approved', approvedAt: F.serverTimestamp(), plan: users.find((u) => u.id === uid)?.plan || plans.defaultPlan || 'free' }, '승인했어요');
+  if (act === 'reject') setUser(uid, { status: 'rejected' }, '거절했어요');
+  if (act === 'block') { if (confirm('이 회원의 이용을 정지할까요?')) setUser(uid, { status: 'blocked' }, '정지했어요'); }
+  if (act === 'pending') setUser(uid, { status: 'pending' }, '대기로 돌렸어요');
+});
+document.addEventListener('change', (e) => {
+  const tr = e.target.closest('tr[data-uid]'); if (!tr) return;
+  if (e.target.matches('[data-plan]')) setUser(tr.dataset.uid, { plan: e.target.value }, '플랜을 바꿨어요');
+  if (e.target.matches('[data-memo]')) setUser(tr.dataset.uid, { adminMemo: e.target.value.slice(0, 200) }, '메모 저장');
+});
+$('#app-filter').addEventListener('click', (e) => { const b = e.target.closest('button[data-f]'); if (!b) return; filter = b.dataset.f; $$('#app-filter button').forEach((x) => x.classList.toggle('on', x === b)); renderApps(); });
+$('#q').addEventListener('input', renderApps);
+
+// ── 요금제 편집 ──
+function renderPlans() {
+  $('#def-plan').innerHTML = plans.plans.map((p) => `<option value="${esc(p.id)}" ${p.id === plans.defaultPlan ? 'selected' : ''}>${esc(p.name)}</option>`).join('');
+  $('#plan-edit').innerHTML = plans.plans.map((p, i) => `<div class="plan" data-i="${i}">
+    <div class="row"><label style="flex:1">이름<input class="in" data-k="name" value="${esc(p.name)}"></label><label style="width:110px">ID<input class="in" data-k="id" value="${esc(p.id)}"></label></div>
+    <div class="row"><label style="flex:1">가격 표시<input class="in" data-k="price" value="${esc(p.price || '')}" placeholder="9,900원"></label><label style="width:90px">단위<input class="in" data-k="period" value="${esc(p.period || '')}" placeholder="/월"></label><label style="width:90px">뱃지<input class="in" data-k="badge" value="${esc(p.badge || '')}" placeholder="인기"></label></div>
+    <label>설명<input class="in" data-k="desc" value="${esc(p.desc || '')}"></label>
+    ${Object.entries(FEATURES).map(([k, t]) => `<label class="feat" style="flex-direction:row"><input type="checkbox" data-f="${k}" ${p.features?.[k] ? 'checked' : ''}>${t}</label>`).join('')}
+    <div class="row"><label class="feat" style="flex-direction:row"><input type="checkbox" data-k="visible" ${p.visible !== false ? 'checked' : ''}>사이트에 보이기</label><label class="feat" style="flex-direction:row"><input type="checkbox" data-k="highlight" ${p.highlight ? 'checked' : ''}>강조</label><span class="sp"></span><button class="btn sm bad" data-del="${i}">삭제</button></div>
+  </div>`).join('');
+}
+$('#plan-edit').addEventListener('input', (e) => {
+  const card = e.target.closest('.plan'); if (!card) return;
+  const p = plans.plans[Number(card.dataset.i)];
+  if (e.target.dataset.f) { p.features = p.features || {}; p.features[e.target.dataset.f] = e.target.checked; }
+  else if (e.target.dataset.k) p[e.target.dataset.k] = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
+});
+$('#plan-edit').addEventListener('click', (e) => { const d = e.target.dataset.del; if (d == null) return; if (plans.plans.length <= 1) return toast('플랜은 하나 이상 있어야 해요'); if (confirm('이 플랜을 지울까요?')) { plans.plans.splice(Number(d), 1); renderPlans(); } });
+$('#btn-plan-add').onclick = () => { plans.plans.push({ id: `plan${plans.plans.length + 1}`, name: '새 플랜', price: '', period: '/월', desc: '', visible: true, features: {} }); renderPlans(); };
+$('#def-plan').onchange = (e) => { plans.defaultPlan = e.target.value; };
+$('#btn-plans-save').onclick = async () => {
+  const ids = plans.plans.map((p) => String(p.id || '').trim());
+  if (ids.some((x) => !/^[a-z0-9_-]{2,20}$/i.test(x)) || new Set(ids).size !== ids.length) return toast('ID는 영문/숫자 2~20자, 서로 달라야 해요');
+  const { F, db } = fb;
+  try { await F.setDoc(F.doc(db, 'config', 'plans'), { ...plans, updatedAt: F.serverTimestamp() }); toast('요금제를 저장했어요'); renderMembers(); }
+  catch (e) { toast(`저장 실패: ${e.code || e.message}`); }
+};
+
+// ── 사이트 설정 ──
+async function loadSite() {
+  const s = await getConfig('site', DEFAULT_SITE);
+  const priv = await getConfig('private', {});
+  $('#s-invite').checked = s.inviteOnly !== false; $('#s-signup').checked = s.allowSignup !== false;
+  $('#s-notice').value = s.notice || ''; $('#s-download').value = priv.downloadUrl || '';
+}
+$('#btn-site-save').onclick = async () => {
+  const { F, db } = fb;
+  try {
+    await F.setDoc(F.doc(db, 'config', 'site'), { inviteOnly: $('#s-invite').checked, allowSignup: $('#s-signup').checked, notice: $('#s-notice').value.trim(), updatedAt: F.serverTimestamp() });
+    await F.setDoc(F.doc(db, 'config', 'private'), { downloadUrl: $('#s-download').value.trim(), updatedAt: F.serverTimestamp() }, { merge: true });
+    toast('사이트 설정을 저장했어요');
+  } catch (e) { toast(`저장 실패: ${e.code || e.message}`); }
+};
+
+(async () => {
+  fb = await load();
+  onUser(async (u) => {
+    unsub?.(); unsub = null;
+    const admin = isAdmin(u);
+    $('#gate').hidden = admin; $('#tabs').hidden = !admin; $('#btn-out').hidden = !u;
+    ['apps', 'members', 'plans', 'site'].forEach((k) => { $(`#t-${k}`).hidden = !admin || k !== ($('#tabs button.on')?.dataset.t || 'apps'); });
+    if (u && !admin) $('#gate-msg').textContent = `${u.email} 은(는) 관리자 계정이 아니에요.`;
+    if (!admin) return;
+    plans = await getConfig('plans', structuredClone(DEFAULT_PLANS));
+    renderPlans(); loadSite();
+    const { F, db } = fb;
+    unsub = F.onSnapshot(F.collection(db, 'users'), (snap) => {
+      users = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+      renderApps(); renderMembers();
+    }, (e) => toast(`회원 목록을 못 읽었어요: ${e.code}`));
+  });
+})();
+</script>
+</body>
+</html>

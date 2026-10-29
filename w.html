@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<title>COMOS 위젯</title>
+<style>
+  html, body { margin: 0; width: 100%; height: 100%; background: transparent; overflow: hidden; }
+  iframe { position: fixed; inset: 0; width: 100%; height: 100%; border: 0; background: transparent; }
+  #off { position: fixed; left: 12px; top: 12px; font: 700 14px 'Malgun Gothic', sans-serif; color: #fff; background: rgba(0,0,0,.6); padding: 6px 12px; border-radius: 8px; display: none; }
+</style>
+</head>
+<body>
+<iframe id="f" allow="autoplay; microphone" title="COMOS"></iframe>
+<div id="off">COMOS 프로그램이 꺼져 있어요 · 켜면 자동으로 나와요</div>
+<script>
+// 틱톡 LIVE Studio처럼 https 주소만 받는 프로그램용 중계 페이지.
+// 이 페이지는 내 PC에서 돌아가는 COMOS(http://127.0.0.1:4848)의 위젯을 그대로 띄워요.
+(function () {
+  var p = new URLSearchParams(location.search);
+  var w = String(p.get('w') || 'scene').replace(/[^a-z0-9-]/gi, '');
+  var port = Number(p.get('port')) || 4848;
+  p.delete('w'); p.delete('port');
+  var qs = p.toString();
+  var base = 'http://127.0.0.1:' + port;
+  var url = base + '/overlay/' + w + (qs ? '?' + qs : '');
+  var f = document.getElementById('f');
+  var off = document.getElementById('off');
+  var shown = false;
+  function ping() {
+    var img = new Image();
+    var done = false;
+    img.onload = function () { if (done) return; done = true; off.style.display = 'none'; if (!shown) { shown = true; f.src = url; } };
+    img.onerror = function () { if (done) return; done = true; if (!shown) { off.style.display = p.has('quiet') ? 'none' : 'block'; setTimeout(ping, 3000); } };
+    img.src = base + '/ping.gif?t=' + Date.now();
+    setTimeout(function () { if (!done) { done = true; if (!shown) setTimeout(ping, 2000); } }, 4000);
+  }
+  ping();
+})();
+</script>
+</body>
+</html>
