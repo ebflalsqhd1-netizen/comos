@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>영상 도네이션 신청 · COMOS</title>
+<meta name="description" content="틱톡 라이브 영상 도네이션 신청 페이지. 유튜브 링크를 보내고 방송에서 선물하면 화면에 영상이 나와요.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23FFD400'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%23111'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root { --bg: #08080d; --card: #13131d; --card2: #191926; --line: #26263c; --text: #f1f1f7; --muted: #9b9bb4; --y: #FFD400; --p: #FF2D75; --ok: #3ddc84; --bad: #ff5a5f;
+    --font: 'Pretendard', 'Noto Sans KR', 'Malgun Gothic', 'Apple SD Gothic Neo', system-ui, sans-serif; }
+  * { box-sizing: border-box; }
+  body { margin: 0; min-height: 100vh; background: radial-gradient(60% 40% at 20% 0%, rgba(255,45,117,.18), transparent 70%), radial-gradient(50% 40% at 90% 10%, rgba(255,212,0,.12), transparent 70%), var(--bg);
+    color: var(--text); font-family: var(--font); -webkit-font-smoothing: antialiased; line-height: 1.6; }
+  a { color: inherit; }
+  [hidden] { display: none !important; }
+  .wrap { width: min(560px, 100% - 32px); margin: 0 auto; padding: 28px 0 60px; }
+  .top { display: flex; align-items: center; gap: 10px; font-weight: 900; margin-bottom: 26px; }
+  .top i { width: 28px; height: 28px; border-radius: 8px; background: var(--y); display: grid; place-items: center; }
+  .top i::after { content: ''; width: 10px; height: 10px; border-radius: 50%; background: #111; }
+  .top span { color: var(--muted); font-weight: 700; font-size: 13px; margin-left: auto; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 22px; }
+  h1 { font-size: 26px; line-height: 1.25; margin: 0 0 6px; letter-spacing: -.5px; }
+  h1 b { background: linear-gradient(90deg, #FF2D75, #FF8A3D 50%, #FFD400); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .sub { color: var(--muted); margin: 0 0 18px; font-size: 14.5px; }
+  .rules { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 0 0 18px; }
+  .rules div { background: var(--card2); border: 1px solid var(--line); border-radius: 14px; padding: 10px; text-align: center; }
+  .rules b { display: block; font-size: 19px; color: var(--y); }
+  .rules span { color: var(--muted); font-size: 12px; font-weight: 700; }
+  .msg { background: rgba(255,212,0,.08); border: 1px solid rgba(255,212,0,.3); color: #ffe58a; border-radius: 12px; padding: 10px 12px; font-size: 14px; margin: 0 0 18px; }
+  label { display: flex; flex-direction: column; gap: 6px; font-size: 13.5px; font-weight: 800; color: #d6d6e6; margin-bottom: 14px; }
+  label small { color: var(--muted); font-weight: 500; }
+  input { font: inherit; color: var(--text); background: #0c0c13; border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; outline: none; width: 100%; }
+  input:focus { border-color: var(--y); }
+  .at { position: relative; }
+  .at::before { content: '@'; position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--muted); font-weight: 800; }
+  .at input { padding-left: 32px; }
+  .row2 { display: grid; grid-template-columns: 1fr 120px; gap: 10px; }
+  .preview { display: none; gap: 12px; align-items: center; background: var(--card2); border: 1px solid var(--line); border-radius: 14px; padding: 10px; margin: -4px 0 16px; }
+  .preview.on { display: flex; }
+  .preview img { width: 128px; aspect-ratio: 16/9; object-fit: cover; border-radius: 8px; background: #000; }
+  .preview div { font-size: 13px; color: var(--muted); }
+  .btn { width: 100%; border: 0; border-radius: 14px; padding: 15px; font: inherit; font-weight: 900; font-size: 17px; color: #fff; cursor: pointer; background: linear-gradient(90deg, #FF2D75, #FF6A3D); box-shadow: 0 10px 30px rgba(255,45,117,.35); }
+  .btn:disabled { opacity: .5; cursor: default; }
+  .err { color: var(--bad); font-weight: 800; font-size: 14px; margin: 10px 0 0; min-height: 1em; }
+  .done { text-align: center; }
+  .done .big { font-size: 46px; }
+  .steps { text-align: left; background: var(--card2); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; margin: 14px 0; font-size: 14.5px; }
+  .steps b { color: var(--y); }
+  .status { display: inline-block; font-weight: 900; padding: 6px 14px; border-radius: 99px; background: #23233a; margin: 6px 0 4px; }
+  .status.ok { background: rgba(61,220,132,.15); color: var(--ok); }
+  .status.bad { background: rgba(255,90,95,.15); color: var(--bad); }
+  .status.wait { background: rgba(255,212,0,.12); color: var(--y); }
+  .ghost { background: none; border: 1px solid var(--line); color: var(--text); box-shadow: none; font-size: 15px; padding: 12px; margin-top: 8px; }
+  .closed { text-align: center; color: var(--muted); padding: 30px 10px; }
+  footer { text-align: center; color: #5d5d78; font-size: 12.5px; margin-top: 24px; }
+  footer a { color: #8a8aa8; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><i></i>COMOS <span>영상 도네이션</span></div>
+
+  <div class="card" id="loading"><div class="closed">불러오는 중…</div></div>
+
+  <div class="card" id="closed" hidden>
+    <div class="closed"><div style="font-size:40px">🎬</div><b id="closed-title">지금은 영상 신청을 받지 않아요</b><p id="closed-sub" style="margin:6px 0 0">스트리머가 방송 중일 때 다시 와 주세요.</p></div>
+  </div>
+
+  <div class="card" id="form-card" hidden>
+    <h1><b id="s-name">스트리머</b>님에게<br>영상 보내기</h1>
+    <p class="sub">유튜브 링크를 보내고, 틱톡 라이브에서 <b>선물</b>을 보내면 방송 화면에 영상이 나와요.</p>
+    <div class="rules">
+      <div><b id="r-min">10</b><span>최소 코인</span></div>
+      <div><b id="r-per">1초</b><span>1코인당</span></div>
+      <div><b id="r-max">60초</b><span>최대 재생</span></div>
+    </div>
+    <div class="msg" id="s-msg" hidden></div>
+    <form id="f" autocomplete="on">
+      <label>내 틱톡 아이디 <small>선물 보낼 계정 · @ 뒤 영문 아이디 (닉네임 아님)</small>
+        <div class="at"><input id="tiktok" name="tiktok" required maxlength="30" placeholder="my_tiktok_id" autocapitalize="off" spellcheck="false"></div>
+      </label>
+      <label>방송에 보일 이름 <small>(선택)</small><input id="nick" maxlength="20" placeholder="비우면 아이디로 보여요"></label>
+      <div class="row2">
+        <label>유튜브 링크<input id="url" required maxlength="250" placeholder="https://youtu.be/..." inputmode="url"></label>
+        <label>시작 시간<input id="start" maxlength="8" placeholder="0:00"></label>
+      </div>
+      <div class="preview" id="pv"><img id="pv-img" alt=""><div>이 영상이 맞나요?<br><span id="pv-id"></span></div></div>
+      <button class="btn" id="go" type="submit">신청하기</button>
+      <p class="err" id="err"></p>
+    </form>
+  </div>
+
+  <div class="card done" id="done" hidden>
+    <div class="big">✅</div>
+    <h1 style="font-size:22px">신청했어요!</h1>
+    <div class="status wait" id="st">선물을 기다리는 중</div>
+    <div class="steps">
+      1. 틱톡 라이브로 돌아가서<br>
+      2. <b id="d-min">10코인</b> 이상 <b>선물</b>을 보내 주세요 <span id="d-gifts"></span><br>
+      3. 보낸 코인 × <b id="d-per">1초</b> 만큼 방송에 영상이 나와요 (최대 <b id="d-max">60초</b>)
+    </div>
+    <p class="sub" id="d-note" style="margin:0">선물은 <b id="d-win">5분</b> 안에 보내야 해요. 같은 틱톡 아이디로 보내야 연결돼요.</p>
+    <button class="btn ghost" id="again" type="button">다른 영상 신청</button>
+  </div>
+
+  <footer>COMOS · 신청한 영상은 스트리머가 넘길 수 있어요 · <a href="./">COMOS 홈</a> · <a href="privacy.html">개인정보</a></footer>
+</div>
+
+<script type="module">
+import { load, esc } from './fb.js';
+
+const $ = (id) => document.getElementById(id);
+const sid = String(new URLSearchParams(location.search).get('s') || '').replace(/^@/, '').trim().toLowerCase();
+let S = null;
+let unsub = null;
+
+function ytId(text) {
+  const m = String(text || '').match(/(?:youtube\.com\/(?:watch\?[^\s]*?v=|shorts\/|embed\/|live\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/i);
+  return m ? m[1] : '';
+}
+function show(id) { ['loading', 'closed', 'form-card', 'done'].forEach((x) => { $(x).hidden = x !== id; }); }
+const sec = (n) => (n >= 60 && n % 60 === 0 ? `${n / 60}분` : `${n}초`);
+
+async function init() {
+  try { $('tiktok').value = localStorage.getItem('comos_tiktok') || ''; } catch {}
+  if (!sid) { $('closed-title').textContent = '주소가 잘못됐어요'; $('closed-sub').textContent = '스트리머가 알려준 링크로 다시 들어와 주세요.'; show('closed'); return; }
+  try {
+    const { F, db } = await load();
+    const snap = await F.getDoc(F.doc(db, 'streamers', sid));
+    if (!snap.exists()) { $('closed-title').textContent = '아직 영상 신청을 열지 않은 스트리머예요'; show('closed'); return; }
+    S = snap.data();
+  } catch (e) {
+    $('closed-title').textContent = '불러오지 못했어요'; $('closed-sub').textContent = '잠시 후 새로고침 해 주세요.'; show('closed'); return;
+  }
+  document.title = `${S.nickname || sid}님에게 영상 보내기 · COMOS`;
+  if (!S.web || !S.enabled) { $('closed-title').textContent = `${S.nickname || sid}님은 지금 영상 신청을 받지 않아요`; show('closed'); return; }
+  $('s-name').textContent = S.nickname || `@${sid}`;
+  $('r-min').textContent = S.minCoins || 1;
+  $('r-per').textContent = `${S.secPerCoin || 1}초`;
+  $('r-max').textContent = sec(S.maxSec || 60);
+  if (S.message) { $('s-msg').textContent = S.message; $('s-msg').hidden = false; }
+  show('form-card');
+}
+
+$('url').addEventListener('input', () => {
+  const id = ytId($('url').value);
+  $('pv').classList.toggle('on', Boolean(id));
+  if (id) { $('pv-img').src = `https://i.ytimg.com/vi/${id}/mqdefault.jpg`; $('pv-id').textContent = id; }
+});
+
+$('f').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  $('err').textContent = '';
+  const tiktok = $('tiktok').value.trim().replace(/^@/, '').toLowerCase();
+  const url = $('url').value.trim();
+  if (!/^[a-z0-9._]{2,30}$/.test(tiktok)) { $('err').textContent = '틱톡 아이디를 확인해 주세요 (영문·숫자·밑줄·점)'; return; }
+  if (!ytId(url)) { $('err').textContent = '유튜브 영상 링크를 넣어 주세요'; return; }
+  const startText = $('start').value.trim();
+  let start = 0;
+  if (startText) {
+    if (/^\d{1,2}:\d{2}(:\d{2})?$/.test(startText)) start = startText.split(':').map(Number).reduce((a, b) => a * 60 + b, 0);
+    else if (/^\d+$/.test(startText)) start = Number(startText);
+    else { $('err').textContent = '시작 시간은 1:30 처럼 적어 주세요'; return; }
+  }
+  $('go').disabled = true;
+  try {
+    const { F, db } = await load();
+    const ref = await F.addDoc(F.collection(db, 'videoRequests'), {
+      sid, uid: S.uid, tiktok, nickname: $('nick').value.trim().slice(0, 20) || tiktok, url: url.slice(0, 250), start: Math.min(36000, start),
+      status: 'new', createdAt: F.serverTimestamp(),
+    });
+    try { localStorage.setItem('comos_tiktok', tiktok); } catch {}
+    $('d-min').textContent = `${S.minCoins || 1}코인`;
+    $('d-per').textContent = `${S.secPerCoin || 1}초`;
+    $('d-max').textContent = sec(S.maxSec || 60);
+    $('d-gifts').textContent = (S.gifts || []).length ? `(선물: ${S.gifts.join(', ')})` : '';
+    show('done');
+    watch(ref.id);
+  } catch (err) {
+    $('err').textContent = '신청하지 못했어요. 잠시 후 다시 해 주세요.';
+    console.warn(err);
+  } finally { $('go').disabled = false; }
+});
+
+const ST = {
+  new: ['스트리머 PC로 보내는 중…', 'wait'], received: ['선물을 기다리는 중', 'wait'], waiting: ['선물을 기다리는 중', 'wait'],
+  review: ['스트리머가 확인하는 중', 'wait'], queued: ['곧 재생돼요! 순서를 기다리는 중', 'ok'], playing: ['지금 방송에 나오는 중 🎬', 'ok'],
+  done: ['재생 끝! 고마워요 💛', 'ok'], rejected: ['넘겨졌어요', 'bad'], expired: ['선물이 안 들어와서 취소됐어요', 'bad'],
+};
+async function watch(id) {
+  unsub?.();
+  const { F, db } = await load();
+  unsub = F.onSnapshot(F.doc(db, 'videoRequests', id), (snap) => {
+    const d = snap.data() || {};
+    const [t, c] = ST[d.status] || ['확인 중', 'wait'];
+    $('st').textContent = d.reason && c === 'bad' ? `${t} · ${d.reason}` : t;
+    $('st').className = `status ${c}`;
+    if (d.durationSec && ['queued', 'playing', 'done'].includes(d.status)) $('st').textContent += ` (${d.coins}코인 · ${d.durationSec}초)`;
+  }, () => {});
+}
+$('again').addEventListener('click', () => { unsub?.(); $('url').value = ''; $('start').value = ''; $('pv').classList.remove('on'); show('form-card'); });
+
+init();
+</script>
+</body>
+</html>
