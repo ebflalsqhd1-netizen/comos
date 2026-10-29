@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>영상 도네이션 신청 · COMOS</title>
+<title>영상 도네이션 신청 · CCOMOS</title>
 <meta name="description" content="틱톡 라이브 영상 도네이션 신청 페이지. 유튜브 링크를 보내고 방송에서 선물하면 화면에 영상이 나와요.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23FFD400'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%23111'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -61,7 +61,7 @@
 </head>
 <body>
 <div class="wrap">
-  <div class="top"><i></i>COMOS <span>영상 도네이션</span></div>
+  <div class="top"><i></i>CCOMOS <span>영상 도네이션</span></div>
 
   <div class="card" id="loading"><div class="closed">불러오는 중…</div></div>
 
@@ -106,7 +106,7 @@
     <button class="btn ghost" id="again" type="button">다른 영상 신청</button>
   </div>
 
-  <footer>COMOS · 신청한 영상은 스트리머가 넘길 수 있어요 · <a href="./">COMOS 홈</a> · <a href="privacy.html">개인정보</a></footer>
+  <footer>CCOMOS · 신청한 영상은 스트리머가 넘길 수 있어요 · <a href="./">CCOMOS 홈</a> · <a href="privacy.html">개인정보</a></footer>
 </div>
 
 <script type="module">
@@ -135,7 +135,7 @@ async function init() {
   } catch (e) {
     $('closed-title').textContent = '불러오지 못했어요'; $('closed-sub').textContent = '잠시 후 새로고침 해 주세요.'; show('closed'); return;
   }
-  document.title = `${S.nickname || sid}님에게 영상 보내기 · COMOS`;
+  document.title = `${S.nickname || sid}님에게 영상 보내기 · CCOMOS`;
   if (!S.web || !S.enabled) { $('closed-title').textContent = `${S.nickname || sid}님은 지금 영상 신청을 받지 않아요`; show('closed'); return; }
   $('s-name').textContent = S.nickname || `@${sid}`;
   $('r-min').textContent = S.minCoins || 1;

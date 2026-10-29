@@ -1,4 +1,4 @@
-// COMOS 웹사이트 공용: Firebase 로그인·회원 정보·사이트 설정
+// CCOMOS 웹사이트 공용: Firebase 로그인·회원 정보·사이트 설정
 // (공개되어도 되는 웹 설정값. 실제 보호는 Firestore 보안 규칙이 담당)
 export const FIREBASE_CONFIG = {
   apiKey: 'AIzaSyDtXRG1_6joTrsUFzW1YMoPbhISJD64us0',
