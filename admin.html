@@ -196,7 +196,7 @@ document.addEventListener('click', (e) => {
   const b = e.target.closest('[data-act]'); if (!b) return;
   const uid = b.closest('tr').dataset.uid; const { F } = fb;
   const act = b.dataset.act;
-  if (act === 'approve') setUser(uid, { status: 'approved', approvedAt: F.serverTimestamp(), plan: users.find((u) => u.id === uid)?.plan || plans.defaultPlan || 'free' }, '승인했어요');
+  if (act === 'approve') setUser(uid, { status: 'approved', approvedAt: F.serverTimestamp(), plan: users.find((u) => u.id === uid)?.plan || plans.defaultPlan || 'beta' }, '승인했어요');
   if (act === 'reject') setUser(uid, { status: 'rejected' }, '거절했어요');
   if (act === 'block') { if (confirm('이 회원의 이용을 정지할까요?')) setUser(uid, { status: 'blocked' }, '정지했어요'); }
   if (act === 'pending') setUser(uid, { status: 'pending' }, '대기로 돌렸어요');

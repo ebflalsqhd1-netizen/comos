@@ -20,11 +20,11 @@ export const FEATURES = {
   cloud_save: '설정 계정 저장',
 };
 export const DEFAULT_PLANS = {
-  defaultPlan: 'free',
+  defaultPlan: 'beta',
   plans: [
-    { id: 'free', name: '무료', price: '0원', period: '', desc: '지인 베타 · 기본 기능 전부', badge: '', visible: true,
-      features: { pets_premium: false, voices_premium: false, super_gift: true, layout: true, cloud_save: true } },
-    { id: 'pro', name: '프로', price: '9,900원', period: '/월', desc: '모든 펫·목소리·연출', badge: '준비중', visible: true, highlight: true,
+    { id: 'beta', name: '베타', price: '0원', period: '', desc: '지인 베타 · 모든 기능 전부 무료', badge: '지금 무료', visible: true, highlight: true,
+      features: { pets_premium: true, voices_premium: true, super_gift: true, layout: true, cloud_save: true } },
+    { id: 'pro', name: '프로', price: '정식 출시 후 공개', period: '', desc: '정식 버전에서 안내할게요', badge: '준비중', visible: false,
       features: { pets_premium: true, voices_premium: true, super_gift: true, layout: true, cloud_save: true } },
   ],
 };
