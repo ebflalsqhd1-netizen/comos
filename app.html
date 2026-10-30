@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>내 CCOMOS · 모든 기능</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23F2CE7C'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%23111'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #08080d; --bg2: #0f0f17; --card: #13131d; --card2: #191926; --line: #24243a; --text: #f1f1f7; --muted: #9b9bb4;
+    --y: #F2CE7C; --g: linear-gradient(100deg, #FFF3D6, #F2CE7C 48%, #D9AE5B);
+    --gold-soft: rgba(242,206,124,.14); --gold-line: rgba(242,206,124,.42);
+    --font: 'Pretendard', 'Noto Sans KR', 'Malgun Gothic', 'Apple SD Gothic Neo', system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--font); -webkit-font-smoothing: antialiased; line-height: 1.6; overflow-x: hidden; }
+  a { color: inherit; text-decoration: none; }
+  button { font: inherit; cursor: pointer; }
+  [hidden] { display: none !important; }
+  .wrap { width: min(1180px, 100% - 32px); margin: 0 auto; }
+  header { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(14px); background: rgba(8,8,13,.82); border-bottom: 1px solid rgba(255,255,255,.06); }
+  .nav { display: flex; align-items: center; gap: 14px; height: 64px; }
+  .logo { display: flex; align-items: center; gap: 10px; font-weight: 900; letter-spacing: .3px; }
+  .logo i { width: 30px; height: 30px; border-radius: 9px; background: var(--g); display: grid; place-items: center; box-shadow: 0 0 20px rgba(242,206,124,.4), inset 0 1px 0 rgba(255,255,255,.5); }
+  .logo i::after { content: ''; width: 11px; height: 11px; border-radius: 50%; background: #1a1410; }
+  .logo small { color: var(--muted); font-weight: 700; font-size: 11px; border: 1px solid var(--line); padding: 1px 7px; border-radius: 99px; }
+  .sp { flex: 1; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 16px; border-radius: 12px; border: 1px solid var(--line); background: var(--card2); color: var(--text); font-weight: 800; white-space: nowrap; transition: transform .1s, filter .15s; }
+  .btn:hover { filter: brightness(1.12); }
+  .btn:active { transform: scale(.97); }
+  .btn.pri { border: 0; color: #1d1405; background: var(--g); box-shadow: 0 10px 28px rgba(242,206,124,.25), inset 0 1px 0 rgba(255,255,255,.45); }
+  .btn.small { padding: 7px 12px; font-size: 13px; border-radius: 10px; }
+  .btn.big { padding: 14px 22px; font-size: 16px; border-radius: 14px; }
+  .me { display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 14px; min-width: 0; }
+  .me img { width: 32px; height: 32px; border-radius: 50%; }
+  .me .nm { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 180px; }
+  .pill { font-size: 12px; font-weight: 800; padding: 3px 10px; border-radius: 99px; border: 1px solid var(--line); color: var(--muted); white-space: nowrap; }
+  .pill.ok { color: #3ddc84; border-color: rgba(61,220,132,.4); }
+  .pill.off { color: #ff8a8a; border-color: rgba(255,138,138,.4); }
+  .notice { background: linear-gradient(90deg, rgba(255,45,117,.15), rgba(255,212,0,.12)); border-bottom: 1px solid var(--line); font-size: 14px; font-weight: 700; text-align: center; padding: 9px 16px; }
+  .hello { padding: 36px 0 8px; }
+  .hello h1 { font-size: clamp(26px, 4vw, 38px); margin: 0 0 6px; letter-spacing: -.8px; }
+  .hello h1 .gt { background: var(--g); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .hello p { margin: 0; color: var(--muted); }
+  .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; padding: 22px 0 10px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 22px; min-width: 0; }
+  .card.wide { grid-column: 1 / -1; }
+  .card h2 { margin: 0 0 4px; font-size: 19px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .card h2 small { color: var(--muted); font-size: 13px; font-weight: 600; }
+  .card > p.sub { margin: 0 0 14px; color: var(--muted); font-size: 14px; }
+  .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .steps { margin: 14px 0 0; padding: 0; list-style: none; display: grid; gap: 8px; color: #cfcfe0; font-size: 14px; }
+  .steps li { display: flex; gap: 10px; align-items: flex-start; }
+  .steps i { width: 24px; height: 24px; flex: none; border-radius: 50%; display: grid; place-items: center; font-style: normal; font-weight: 900; font-size: 12px; background: var(--card2); border: 1px solid var(--line); }
+  .hint { color: var(--muted); font-size: 13px; margin: 10px 0 0; }
+  .olinks { border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; margin-top: 12px; }
+  .olinks .t { font-weight: 900; display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+  .olinks .t small { color: var(--muted); font-weight: 600; font-size: 12.5px; }
+  .lbl { font-size: 12px; color: var(--muted); font-weight: 700; margin: 9px 0 4px; }
+  .url { display: flex; gap: 8px; align-items: center; background: #0d0d14; border: 1px solid var(--line); border-radius: 10px; padding: 5px 5px 5px 12px; min-width: 0; }
+  .url code { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12.5px; color: #d8d9ff; }
+  .feats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-top: 6px; }
+  .feat { display: flex; gap: 10px; align-items: flex-start; padding: 12px; border-radius: 14px; background: var(--card2); border: 1px solid var(--line); transition: border-color .15s, transform .1s; }
+  .feat:hover { border-color: var(--gold-line); }
+  .feat:active { transform: scale(.98); }
+  .feat .ic { font-size: 20px; line-height: 1.2; }
+  .feat b { display: block; font-size: 14.5px; }
+  .feat span { display: block; color: var(--muted); font-size: 12.5px; line-height: 1.45; }
+  details.wl { margin-top: 6px; }
+  details.wl summary { cursor: pointer; font-weight: 800; color: #e6e6f2; padding: 6px 0; }
+  .wlist { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 8px; }
+  .w { background: var(--card2); border: 1px solid var(--line); border-radius: 14px; padding: 12px; min-width: 0; }
+  .w .h { display: flex; gap: 8px; align-items: center; font-weight: 800; }
+  .w .h small { color: var(--muted); font-weight: 600; font-size: 12px; margin-left: auto; white-space: nowrap; }
+  .w .d { color: var(--muted); font-size: 12.5px; margin: 2px 0 8px; }
+  .w .row .btn { flex: 1; }
+  .kv { display: grid; grid-template-columns: auto 1fr; gap: 6px 16px; font-size: 14.5px; }
+  .kv dt { color: var(--muted); }
+  .kv dd { margin: 0; font-weight: 700; min-width: 0; overflow-wrap: anywhere; }
+  .state { text-align: center; padding: 80px 16px; color: var(--muted); }
+  .state .big { font-size: 40px; }
+  footer { border-top: 1px solid var(--line); margin-top: 40px; padding: 24px 0 40px; color: var(--muted); font-size: 13px; }
+  footer .wrap { display: flex; gap: 16px; flex-wrap: wrap; justify-content: space-between; }
+  footer a { margin-left: 14px; }
+  .toast { position: fixed; left: 50%; bottom: 26px; transform: translateX(-50%) translateY(20px); background: #222233; border: 1px solid var(--gold-line); color: #fff; padding: 10px 18px; border-radius: 12px; font-weight: 800; opacity: 0; transition: .2s; pointer-events: none; z-index: 99; }
+  .toast.on { opacity: 1; transform: translateX(-50%) translateY(0); }
+  @media (max-width: 980px) { .grid { grid-template-columns: 1fr; } .feats { grid-template-columns: repeat(2, minmax(0, 1fr)); } .wlist { grid-template-columns: 1fr; } }
+  @media (max-width: 560px) { .me .nm, #hdr-status { display: none; } .feats { grid-template-columns: 1fr; } .nav .btn { padding: 8px 11px; } }
+</style>
+</head>
+<body>
+<div class="notice" id="notice" hidden></div>
+<header>
+  <div class="wrap nav">
+    <a class="logo" href="index.html?stay=1"><i></i>CCOMOS <small>BETA</small></a>
+    <span class="sp"></span>
+    <div class="me" id="hdr-in" hidden><img id="hdr-photo" alt=""><span class="nm" id="hdr-name"></span><span class="pill ok" id="hdr-status"></span></div>
+    <a class="btn small" id="hdr-admin" href="admin.html" hidden>관리자</a>
+    <button class="btn small" id="btn-out" hidden>로그아웃</button>
+  </div>
+</header>
+
+<main class="wrap" id="main">
+  <div class="state" id="loading"><div class="big">⏳</div><p>내 정보를 불러오는 중…</p></div>
+  <div id="page" hidden>
+    <section class="hello">
+      <h1><span id="hello-name"></span>님, <span class="gt">모든 기능을 쓸 수 있어요</span></h1>
+      <p>지금은 지인 베타라 <b>모든 기능 무료</b>예요. 아래에서 바로 시작하세요.</p>
+    </section>
+
+    <div class="grid">
+      <!-- 프로그램 -->
+      <section class="card">
+        <h2>💻 CCOMOS 프로그램 <small>내 PC에서 돌아가요</small></h2>
+        <p class="sub">자막·효과음·위젯은 모두 PC 프로그램이 만들어요. 켜 두고 방송하면 돼요.</p>
+        <div class="row">
+          <a class="btn pri big" id="btn-dash" href="http://127.0.0.1:4848/dashboard/" target="ccomos-dash" rel="noopener">▶ 대시보드 열기</a>
+          <a class="btn big" id="btn-dl" target="_blank" rel="noopener" hidden>⬇ 프로그램 다운로드</a>
+        </div>
+        <p class="hint" id="dl-none" hidden>다운로드 링크는 관리자에게 받아 주세요.</p>
+        <ol class="steps">
+          <li><i>1</i><span>압축을 풀고 <b>「실행.bat」</b> 더블클릭 (처음 한 번은 준비하느라 1~2분 걸려요)</span></li>
+          <li><i>2</i><span>뜨는 CCOMOS 창 왼쪽 아래 <b>[구글로 로그인]</b> — 이 계정과 같은 구글 계정으로</span></li>
+          <li><i>3</i><span>홈에서 틱톡 아이디 넣고 <b>연결</b> → 방송 켜면 자동으로 붙어요</span></li>
+        </ol>
+        <p class="hint">「대시보드 열기」는 프로그램이 켜져 있을 때만 열려요.</p>
+      </section>
+
+      <!-- 전체 위젯 링크 -->
+      <section class="card">
+        <h2>🧩 방송 화면에 넣기 <small>전체 위젯 링크 하나로 끝</small></h2>
+        <p class="sub">대시보드 「오버레이 배치」에서 정한 자리 그대로 나와요. 세로·가로를 따로 넣으세요.</p>
+        <div class="olinks">
+          <div class="t">📱 세로 9:16 방송 <small>소스 크기 1080×1920</small></div>
+          <div class="lbl">틱톡 LIVE Studio (링크 소스)</div>
+          <div class="url"><code id="u-tt-p"></code><button class="btn small pri" data-copy="u-tt-p">복사</button></div>
+          <div class="lbl">OBS (브라우저 소스)</div>
+          <div class="url"><code id="u-obs-p"></code><button class="btn small" data-copy="u-obs-p">복사</button></div>
+        </div>
+        <div class="olinks">
+          <div class="t">🖥 가로 16:9 방송 <small>소스 크기 1920×1080</small></div>
+          <div class="lbl">틱톡 LIVE Studio (링크 소스)</div>
+          <div class="url"><code id="u-tt-l"></code><button class="btn small pri" data-copy="u-tt-l">복사</button></div>
+          <div class="lbl">OBS (브라우저 소스)</div>
+          <div class="url"><code id="u-obs-l"></code><button class="btn small" data-copy="u-obs-l">복사</button></div>
+        </div>
+      </section>
+
+      <!-- 기능 바로가기 -->
+      <section class="card wide">
+        <h2>✨ 기능 바로가기 <small>누르면 대시보드의 그 화면이 열려요</small></h2>
+        <div class="feats" id="feats"></div>
+      </section>
+
+      <!-- 개별 위젯 링크 -->
+      <section class="card wide">
+        <h2>🔗 위젯 하나씩 넣기 <small>원하는 위젯만 따로 넣고 싶을 때</small></h2>
+        <details class="wl"><summary>위젯 20종 링크 보기</summary><div class="wlist" id="wlist"></div></details>
+      </section>
+
+      <!-- 영상 도네이션 -->
+      <section class="card">
+        <h2>🎬 영상 도네이션 신청 링크 <span class="pill" id="vd-state"></span></h2>
+        <p class="sub">시청자에게 이 링크를 알려 주면, 선물 + 유튜브 링크로 방송 화면에 영상을 띄울 수 있어요.</p>
+        <div class="url"><code id="u-vd"></code><button class="btn small pri" data-copy="u-vd">복사</button></div>
+        <p class="hint" id="vd-hint"></p>
+      </section>
+
+      <!-- 내 계정 -->
+      <section class="card">
+        <h2>👤 내 계정</h2>
+        <dl class="kv" id="acct"></dl>
+        <div class="row" style="margin-top:16px"><a class="btn small" href="index.html?stay=1">소개 페이지</a><button class="btn small" id="btn-out2">로그아웃</button></div>
+      </section>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div><b style="color:var(--text)">CCOMOS</b> · 틱톡 라이브 방송 도구 · 틱톡 공식 서비스가 아니에요</div>
+    <div><a href="terms.html">이용약관</a><a href="privacy.html">개인정보처리방침</a></div>
+  </div>
+</footer>
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { load, onUser, signOut, myProfile, getConfig, isAdmin, STATUS, esc, fmtDate } from './fb.js';
+const $ = (s) => document.querySelector(s);
+const LOCAL = 'http://127.0.0.1:4848';
+const SITE = location.origin;
+
+const toast = (m) => { const t = $('#toast'); t.textContent = m; t.classList.add('on'); clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove('on'), 1800); };
+async function copyText(text) {
+  try { await navigator.clipboard.writeText(text); }
+  catch { const ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); } catch {} ta.remove(); }
+  toast('복사했어요');
+}
+document.addEventListener('click', (e) => {
+  const b = e.target.closest('[data-copy]'); if (!b) return;
+  const el = document.getElementById(b.dataset.copy);
+  copyText(el ? el.textContent : b.dataset.copy);
+});
+
+// 전체 위젯 링크 (세로·가로 따로)
+$('#u-tt-p').textContent = `${SITE}/w.html?w=scene&o=portrait`;
+$('#u-obs-p').textContent = `${LOCAL}/overlay/scene?o=portrait`;
+$('#u-tt-l').textContent = `${SITE}/w.html?w=scene&o=landscape`;
+$('#u-obs-l').textContent = `${LOCAL}/overlay/scene?o=landscape`;
+
+// 기능 바로가기 → 대시보드의 각 화면
+const FEATS = [
+  ['home', '🏠', '홈 · 틱톡 연결', '내 틱톡 아이디로 방송에 연결, 오늘 방송 숫자'],
+  ['layout', '🧩', '오버레이 배치', '세로·가로 화면에 위젯 끌어다 놓기'],
+  ['captions', '💬', '실시간 자막 번역', '내 말을 최대 3개 언어 자막으로'],
+  ['chat', '🌐', '댓글 번역', '외국어 댓글 번역 · 내 답장 번역'],
+  ['tts', '🔊', '댓글 읽어주기', '20가지 목소리 · 시청자별 목소리'],
+  ['effects', '🎁', '효과음·연출', '선물 효과음, 알림, 초대형 선물 연출'],
+  ['games', '🍴', '먹어·먹지마', '지정 선물로 자동 카운트다운'],
+  ['events', '🎡', '룰렛·추첨', '선물·명령어 룰렛, 실시간 추첨'],
+  ['video', '🎬', '영상 도네이션', '선물 + 유튜브 링크로 영상 재생'],
+  ['jar', '🫙', '선물 항아리', '선물이 떨어져 쌓이는 항아리'],
+  ['rank', '👑', '순위·기록', 'MVP · TOP GIFT · 선물 기록'],
+  ['tools', '🎯', '목표·공지·타이머', '목표 바, 전광판, 타이머, 연장'],
+  ['settings', '⚙️', '설정', '번역·목소리·백업 등'],
+  ['test', '🧪', '테스트', '방송 없이 선물·댓글 시험해 보기'],
+];
+$('#feats').innerHTML = FEATS.map(([k, ic, t, d]) => `<a class="feat" href="${LOCAL}/dashboard/#${k}" target="ccomos-dash" rel="noopener"><span class="ic">${ic}</span><span><b>${t}</b><span>${d}</span></span></a>`).join('');
+
+// 개별 위젯
+const WIDGETS = [
+  ['alerts', '🎁', '선물 알림·효과음', '1080×1920 / 1920×1080'], ['captions', '💬', '실시간 자막 번역', '1080×500'],
+  ['chat', '🌐', '댓글 번역 창', '600×900'], ['tts', '🔊', '댓글 읽어주기 (소리)', '800×120'],
+  ['mvp', '👑', 'MVP 순위', '420×460'], ['topgifters', '🏆', '탑 기프터 포디움', '480×520'],
+  ['topgift', '💎', 'TOP GIFT', '420×220'], ['giftlog', '🧾', '선물 기록', '420×460'],
+  ['giftroll', '🎁', '받은 선물 돌려보기', '600×180'], ['goal', '🎯', '목표 바', '600×300'],
+  ['goalpromo', '📣', '목표 홍보', '900×140'], ['plaque', '🏅', '레벨 상패', '480×560'],
+  ['marquee', '📢', '전광판 공지', '1080×120'], ['timer', '⏱', '타이머·스톱워치', '600×260'],
+  ['jar', '🫙', '선물 항아리', '600×800'], ['eat', '🍴', '먹어·먹지마', '1000×380'],
+  ['video', '🎬', '영상 도네이션', '1280×860'], ['extend', '⏳', '방송 연장 타이머', '900×190'],
+  ['wheel', '🎡', '행운의 룰렛', '760×760'], ['draw', '🎟️', '실시간 추첨', '600×360'],
+];
+$('#wlist').innerHTML = WIDGETS.map(([k, ic, t, size]) => `<div class="w"><div class="h">${ic} ${t}<small>${size}</small></div>
+  <div class="d">틱톡 LIVE Studio · OBS 주소</div>
+  <div class="row"><button class="btn small pri" data-copy="${SITE}/w.html?w=${k}">LIVE Studio 복사</button><button class="btn small" data-copy="${LOCAL}/overlay/${k}">OBS 복사</button></div></div>`).join('');
+
+function render(user, profile, site, priv) {
+  const admin = isAdmin(user);
+  $('#hdr-photo').src = user.photoURL || '';
+  $('#hdr-photo').hidden = !user.photoURL;
+  $('#hdr-name').textContent = user.displayName || user.email || '';
+  $('#hdr-status').textContent = admin ? '관리자' : STATUS.approved;
+  $('#hdr-in').hidden = false; $('#btn-out').hidden = false; $('#hdr-admin').hidden = !admin;
+  $('#hello-name').textContent = user.displayName || '회원';
+  if (site?.notice) { $('#notice').textContent = site.notice; $('#notice').hidden = false; }
+  const dl = priv?.downloadUrl;
+  if (dl) { $('#btn-dl').href = dl; $('#btn-dl').hidden = false; } else $('#dl-none').hidden = false;
+  const tiktok = String(profile?.application?.tiktok || '').replace(/^@/, '').trim().toLowerCase();
+  $('#acct').innerHTML = `
+    <dt>이름</dt><dd>${esc(user.displayName || '-')}</dd>
+    <dt>이메일</dt><dd>${esc(user.email || '-')}</dd>
+    <dt>틱톡</dt><dd>${tiktok ? '@' + esc(tiktok) : '-'}</dd>
+    <dt>상태</dt><dd>${admin ? '관리자' : esc(STATUS[profile?.status] || '승인됨')}</dd>
+    <dt>요금제</dt><dd>베타 · 모든 기능 무료</dd>
+    ${profile?.approvedAt ? `<dt>승인일</dt><dd>${esc(fmtDate(profile.approvedAt))}</dd>` : ''}`;
+  return tiktok;
+}
+
+async function videoLink(tiktok) {
+  if (!tiktok) {
+    $('#u-vd').textContent = `${SITE}/v.html?s=내틱톡아이디`;
+    $('#vd-state').hidden = true;
+    $('#vd-hint').textContent = '가입 신청서에 틱톡 아이디가 없어요. 대시보드 「영상 도네이션」에서 켜면 내 링크가 만들어져요.';
+    return;
+  }
+  $('#u-vd').textContent = `${SITE}/v.html?s=${encodeURIComponent(tiktok)}`;
+  let on = false;
+  try {
+    const { F, db } = await load();
+    const snap = await F.getDoc(F.doc(db, 'streamers', tiktok));
+    on = snap.exists() && Boolean(snap.data().web) && Boolean(snap.data().enabled);
+  } catch {}
+  $('#vd-state').textContent = on ? '신청 받는 중' : '꺼져 있음';
+  $('#vd-state').className = `pill ${on ? 'ok' : 'off'}`;
+  $('#vd-hint').innerHTML = on ? '시청자가 지금 바로 신청할 수 있어요.' : '대시보드 「영상 도네이션」에서 <b>홈페이지 신청 받기</b>를 켜면 이 링크로 신청이 들어와요.';
+}
+
+const out = async () => { try { await signOut(); } catch {} location.replace('index.html?stay=1'); };
+$('#btn-out').onclick = out; $('#btn-out2').onclick = out;
+
+(async function start(attempt = 1) {
+  try {
+    await load();
+    onUser(async (u) => {
+      if (!u) { location.replace('index.html#join'); return; }
+      let profile = null;
+      try { profile = await myProfile(u); } catch {}
+      const ok = isAdmin(u) || profile?.status === 'approved';
+      if (!ok) { location.replace('index.html?stay=1#join'); return; }   // 아직 승인 전 → 소개 페이지의 가입 칸으로
+      const [site, priv] = await Promise.all([getConfig('site', {}), getConfig('private', {})]);
+      const tiktok = render(u, profile, site, priv);
+      $('#loading').hidden = true; $('#page').hidden = false;
+      videoLink(tiktok);
+    });
+  } catch {
+    if (attempt < 3) { setTimeout(() => start(attempt + 1), 2000 * attempt); return; }
+    $('#loading').innerHTML = '<div class="big">⚠️</div><h3>로그인 기능을 불러오지 못했어요</h3><p>인터넷 연결을 확인하고 다시 시도해 주세요.</p><button class="btn" id="btn-retry">다시 시도</button>';
+    $('#btn-retry').onclick = () => location.reload();
+  }
+})();
+</script>
+</body>
+</html>

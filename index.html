@@ -135,6 +135,7 @@
   .gbtn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 13px; border-radius: 12px; background: #fff; color: #222; font-weight: 800; border: 0; }
   .state { text-align: center; padding: 10px 0; }
   .state .big { font-size: 46px; }
+  .state .btn.big { font-size: 17px; }
   .state h4 { margin: 8px 0 4px; font-size: 20px; }
   .state p { color: var(--muted); margin: 0 0 16px; }
   .msg { font-size: 14px; color: #ff8fb3; min-height: 20px; }
@@ -149,12 +150,13 @@
   footer a { margin-right: 14px; font-weight: 700; }
   @media (max-width: 980px) {
     .menu { display: none; }
-    .hero .wrap, .join { grid-template-columns: 1fr; }
+    .hero .wrap, .join { grid-template-columns: minmax(0, 1fr); }
+    .panel .btn.big { white-space: normal; max-width: 100%; }
     .g4, .voices { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .g3 { grid-template-columns: 1fr; }
     .pets { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   }
-  @media (max-width: 520px) { .g4, .voices { grid-template-columns: 1fr; } .stages img { height: 90px; } .nav .btn { padding: 8px 12px; } }
+  @media (max-width: 520px) { .g4, .voices { grid-template-columns: 1fr; } .stages img { height: 90px; } .nav .btn { padding: 8px 12px; } #hdr-name, #hdr-status { display: none; } #hdr-app:not([hidden]) ~ #btn-out { display: none; } .nav { gap: 10px; } .logo small { display: none; } }
 </style>
 </head>
 <body>
@@ -166,8 +168,8 @@
       <a href="#features">기능</a><a href="#overlays">오버레이</a><a href="#pets">3D 성장펫</a><a href="#voices">TTS 목소리</a><a href="#plans">요금제</a><a href="#join">가입·다운로드</a><a href="#faq">자주 묻는 질문</a>
     </nav>
     <span class="sp"></span>
-    <div id="hdr-out"><button class="btn pri" data-go-join>가입 신청</button></div>
-    <div id="hdr-in" class="me" hidden><img id="hdr-photo" alt=""><span id="hdr-name"></span><span class="pill" id="hdr-status"></span><a class="btn" id="hdr-admin" href="admin.html" hidden>관리자</a><button class="btn" id="btn-out">로그아웃</button></div>
+    <div id="hdr-out" style="display:flex;gap:8px"><button class="btn" id="btn-login">로그인</button><button class="btn pri" data-go-join>가입 신청</button></div>
+    <div id="hdr-in" class="me" hidden><img id="hdr-photo" alt=""><span id="hdr-name"></span><span class="pill" id="hdr-status"></span><a class="btn pri" id="hdr-app" href="app.html" hidden>내 CCOMOS</a><a class="btn" id="hdr-admin" href="admin.html" hidden>관리자</a><button class="btn" id="btn-out">로그아웃</button></div>
   </div>
 </header>
 
@@ -336,6 +338,7 @@ async function renderJoin() {
     let dl = null;
     try { const priv = await getConfig('private', {}); dl = priv.downloadUrl; } catch {}
     panel.innerHTML = `<div class="state"><div class="big">🎉</div><h4>승인됐어요! 바로 쓸 수 있어요</h4><p>지금은 <b>모든 기능 무료</b>예요 (지인 베타)</p>
+      <a class="btn pri big" href="app.html" style="margin-bottom:10px">모든 기능 페이지로 →</a><br>
       ${dl ? `<a class="btn y big" href="${esc(dl)}" target="_blank" rel="noopener">⬇ 프로그램 다운로드</a>` : '<p>다운로드 링크는 관리자에게 받아 주세요.</p>'}
       <p style="margin-top:16px;font-size:14px">압축 풀기 → 「실행.bat」 더블클릭 → 대시보드 왼쪽 아래 [구글로 로그인]</p></div>`;
   } else if (st === 'pending') {
@@ -373,14 +376,22 @@ function renderHeader() {
   $('#hdr-in').hidden = !user;
   if (!user) return;
   $('#hdr-photo').src = user.photoURL || '';
+  $('#hdr-photo').hidden = !user.photoURL;
   $('#hdr-name').textContent = user.displayName || user.email;
   const st = isAdmin(user) ? 'approved' : profile?.status;
   const pill = $('#hdr-status');
   pill.textContent = isAdmin(user) ? '관리자' : STATUS[st] || '미신청';
   pill.className = `pill ${st === 'approved' ? 'ok' : st === 'pending' ? 'wait' : ''}`;
   $('#hdr-admin').hidden = !isAdmin(user);
+  $('#hdr-app').hidden = st !== 'approved';
 }
 document.querySelectorAll('[data-go-join]').forEach((b) => b.addEventListener('click', () => $('#join').scrollIntoView({ behavior: 'smooth' })));
+// 로그인: 승인된 계정이면 바로 '내 CCOMOS'(모든 기능) 페이지로, 아니면 가입 칸으로
+$('#btn-login').onclick = async () => {
+  try { await signIn(); }
+  catch (e) { $('#join').scrollIntoView({ behavior: 'smooth' }); const m = $('#msg'); if (m) m.textContent = loginError(e); }
+};
+const STAY = new URLSearchParams(location.search).has('stay');
 $('#btn-out').onclick = () => signOut();
 
 (async function start(attempt = 1) {
@@ -392,7 +403,9 @@ $('#btn-out').onclick = () => signOut();
     onUser(async (u) => {
       user = u; profile = null;
       if (u) { try { profile = await myProfile(u); } catch (e) { console.warn(e); } }
+      if (u && !STAY && (isAdmin(u) || profile?.status === 'approved')) { location.replace('app.html'); return; }
       renderHeader(); renderJoin();
+      if (u && !(isAdmin(u) || profile?.status === 'approved') && location.hash === '#join') $('#join').scrollIntoView();
     });
   } catch (e) {
     // 인터넷이 잠깐 불안정할 때: 자동으로 두 번 더 시도하고, 그래도 안 되면 버튼으로 다시 시도
