@@ -44,6 +44,8 @@ export async function load() {
       fb = { app, auth, db, A, F };
       return fb;
     })();
+    // 인터넷이 잠깐 끊겨 실패하면 다음 호출 때 다시 시도할 수 있게 비워 둠
+    loading.catch(() => { loading = null; });
   }
   return loading;
 }

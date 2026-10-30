@@ -41,7 +41,22 @@
       navigator.permissions.query({ name: n }).then(function (s) { last += ' [' + n + ':' + s.state + ']'; log(); }).catch(function () {});
     });
   }
-  function show() { if (shown) return; shown = true; off.style.display = 'none'; f.src = url; log(); }
+  function show() { if (shown) return; shown = true; off.style.display = 'none'; f.src = url; log(); setTimeout(watch, 5000); }
+  // 위젯을 띄운 뒤에도 계속 확인: 프로그램이 꺼졌다가(오류) 다시 켜지면(성공) 위젯을 새로 불러와 자동 복구
+  // (응답 없음/권한 대기는 무시 — 확실히 꺼졌다 켜진 경우에만 다시 불러옴)
+  var down = false;
+  function watch() {
+    var img = new Image();
+    var done = false;
+    img.onload = function () {
+      if (done) return; done = true;
+      if (down) { down = false; last = 'recovered'; f.src = url + (url.indexOf('?') < 0 ? '?' : '&') + 'r=' + Date.now(); log(); }
+      setTimeout(watch, 5000);
+    };
+    img.onerror = function () { if (done) return; done = true; if (!down) { down = true; last = 'down'; log(); } setTimeout(watch, 3000); };
+    img.src = base + '/ping.gif?t=' + Date.now();
+    setTimeout(function () { if (done) return; done = true; setTimeout(watch, 5000); }, 4000);
+  }
   function ping() {
     tries++;
     var img = new Image();

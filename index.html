@@ -185,7 +185,7 @@
         <div><b>19종</b><span>고급 효과음</span></div>
       </div>
     </div>
-    <div class="phone"><span class="live">LIVE</span><img src="shot-scene.png" alt="방송 화면 예시"></div>
+    <div class="phone"><span class="live">LIVE</span><img src="shot-scene.webp" alt="방송 화면 예시" onerror="this.style.visibility='hidden'"></div>
   </div>
 </section>
 
@@ -288,7 +288,7 @@ $('#feat-grid').innerHTML = FEATS.map(([ic, t, d, n]) => `<div class="card feat"
 const SHOTS = [['supergift', '초대형 선물 연출', '1500코인 이상 · 화면 전체 + 닉네임'], ['pet', '3D 성장펫', '숨쉬기·깜빡임·진화 연출'], ['layout', '오버레이 배치', '끌어서 옮기고 크기 조절'],
   ['alerts', '선물 알림', '콤보 숫자가 실시간으로'], ['rank', 'MVP 순위', '선물 많이 준 순서'], ['captions', '실시간 자막', '최대 3개 언어'],
   ['goal', '목표 바', '자동으로 다음 목표'], ['jar', '선물 항아리', '물리 엔진으로 쌓이는 선물'], ['chat', '댓글 번역 창', '원문 + 번역']];
-$('#shots').innerHTML = SHOTS.map(([k, t, d]) => `<div class="card shot"><div class="pv"><img src="shot-${k}.png" alt="${t}" loading="lazy" onerror="this.parentElement.innerHTML='<span style=color:#55556e>미리보기 준비중</span>'"></div><div class="meta"><b>${t}</b><span>${d}</span></div></div>`).join('');
+$('#shots').innerHTML = SHOTS.map(([k, t, d]) => `<div class="card shot"><div class="pv"><img src="shot-${k}.webp" alt="${t}" loading="lazy" onerror="this.parentElement.innerHTML='<span style=color:#55556e>미리보기 준비중</span>'"></div><div class="meta"><b>${t}</b><span>${d}</span></div></div>`).join('');
 
 // ── 펫 ──
 const PETS = [['dog', '강아지'], ['shiba', '시바견'], ['maltese', '말티즈'], ['pome', '포메라니안'], ['cat', '고양이'], ['rabbit', '토끼'], ['hamster', '햄스터'], ['bear', '곰'],
@@ -304,7 +304,7 @@ $('#voice-list').innerHTML = VOICES.map(([id, n, d, p]) => `<div class="voice"><
 let audio = null, playing = null;
 $('#voice-list').addEventListener('click', (e) => {
   const b = e.target.closest('button[data-v]'); if (!b) return;
-  if (audio) { audio.pause(); playing?.classList.remove('on'); playing.textContent = '▶'; }
+  if (audio) { audio.pause(); if (playing) { playing.classList.remove('on'); playing.textContent = '▶'; } }
   if (playing === b) { playing = null; return; }
   audio = new Audio(`tts-${b.dataset.v}.mp3`); playing = b; b.classList.add('on'); b.textContent = '■';
   audio.onended = () => { b.classList.remove('on'); b.textContent = '▶'; playing = null; };
@@ -383,7 +383,7 @@ function renderHeader() {
 document.querySelectorAll('[data-go-join]').forEach((b) => b.addEventListener('click', () => $('#join').scrollIntoView({ behavior: 'smooth' })));
 $('#btn-out').onclick = () => signOut();
 
-(async () => {
+(async function start(attempt = 1) {
   try {
     await load();
     site = await getConfig('site', DEFAULT_SITE);
@@ -395,7 +395,10 @@ $('#btn-out').onclick = () => signOut();
       renderHeader(); renderJoin();
     });
   } catch (e) {
-    panel.innerHTML = '<div class="state"><div class="big">⚠️</div><h4>로그인 기능을 불러오지 못했어요</h4><p>잠시 뒤 새로고침해 주세요.</p></div>';
+    // 인터넷이 잠깐 불안정할 때: 자동으로 두 번 더 시도하고, 그래도 안 되면 버튼으로 다시 시도
+    if (attempt < 3) { setTimeout(() => start(attempt + 1), 2000 * attempt); return; }
+    panel.innerHTML = '<div class="state"><div class="big">⚠️</div><h4>로그인 기능을 불러오지 못했어요</h4><p>인터넷 연결을 확인하고 다시 시도해 주세요.</p><button class="btn" id="btn-retry">다시 시도</button></div>';
+    $('#btn-retry').onclick = () => { panel.innerHTML = '<div class="state"><div class="big">⏳</div><p>불러오는 중…</p></div>'; start(1); };
   }
 })();
 </script>
