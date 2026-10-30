@@ -165,7 +165,7 @@
       <section class="card">
         <h2>🎬 영상 도네이션 신청 링크 <span class="pill" id="vd-state"></span></h2>
         <p class="sub">시청자에게 이 링크를 알려 주면, 선물 + 유튜브 링크로 방송 화면에 영상을 띄울 수 있어요.</p>
-        <div class="url"><code id="u-vd"></code><button class="btn small pri" data-copy="u-vd">복사</button></div>
+        <div class="url" id="vd-row"><code id="u-vd"></code><button class="btn small pri" data-copy="u-vd">복사</button></div>
         <p class="hint" id="vd-hint"></p>
       </section>
 
@@ -269,20 +269,29 @@ function render(user, profile, site, priv) {
   return tiktok;
 }
 
-async function videoLink(tiktok) {
-  if (!tiktok) {
-    $('#u-vd').textContent = `${SITE}/v.html?s=내틱톡아이디`;
-    $('#vd-state').hidden = true;
-    $('#vd-hint').textContent = '가입 신청서에 틱톡 아이디가 없어요. 대시보드 「영상 도네이션」에서 켜면 내 링크가 만들어져요.';
-    return;
-  }
-  $('#u-vd').textContent = `${SITE}/v.html?s=${encodeURIComponent(tiktok)}`;
-  let on = false;
+async function videoLink(tiktok, uid) {
+  let sid = tiktok, on = false;
   try {
     const { F, db } = await load();
-    const snap = await F.getDoc(F.doc(db, 'streamers', tiktok));
-    on = snap.exists() && Boolean(snap.data().web) && Boolean(snap.data().enabled);
+    let snap = sid ? await F.getDoc(F.doc(db, 'streamers', sid)) : null;
+    if (!snap || !snap.exists() || (snap.data().uid && snap.data().uid !== uid)) {
+      // 가입 신청서에 틱톡 아이디가 없거나 다르면, 내 계정으로 만든 영상 도네이션 정보를 찾아요
+      const q = await F.getDocs(F.query(F.collection(db, 'streamers'), F.where('uid', '==', uid), F.limit(1)));
+      snap = q.docs[0] || null;
+    }
+    if (snap && (snap.exists ? snap.exists() : true)) {
+      sid = snap.id || sid;
+      const d = snap.data();
+      on = Boolean(d.web) && Boolean(d.enabled);
+    }
   } catch {}
+  if (!sid) {
+    $('#vd-row').hidden = true;
+    $('#vd-state').hidden = true;
+    $('#vd-hint').innerHTML = '대시보드 「영상 도네이션」에서 <b>홈페이지 신청 받기</b>를 켜면 내 신청 링크가 여기에 생겨요.';
+    return;
+  }
+  $('#u-vd').textContent = `${SITE}/v.html?s=${encodeURIComponent(sid)}`;
   $('#vd-state').textContent = on ? '신청 받는 중' : '꺼져 있음';
   $('#vd-state').className = `pill ${on ? 'ok' : 'off'}`;
   $('#vd-hint').innerHTML = on ? '시청자가 지금 바로 신청할 수 있어요.' : '대시보드 「영상 도네이션」에서 <b>홈페이지 신청 받기</b>를 켜면 이 링크로 신청이 들어와요.';
@@ -303,7 +312,7 @@ $('#btn-out').onclick = out; $('#btn-out2').onclick = out;
       const [site, priv] = await Promise.all([getConfig('site', {}), getConfig('private', {})]);
       const tiktok = render(u, profile, site, priv);
       $('#loading').hidden = true; $('#page').hidden = false;
-      videoLink(tiktok);
+      videoLink(tiktok, u.uid);
     });
   } catch {
     if (attempt < 3) { setTimeout(() => start(attempt + 1), 2000 * attempt); return; }
