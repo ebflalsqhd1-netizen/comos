@@ -13,7 +13,6 @@ const V = '13.1.0';
 
 // 기본 요금제 (관리자 페이지에서 바꾸면 Firestore config/plans 가 우선)
 export const FEATURES = {
-  pets_premium: '신비한 펫 8종 (드래곤·백호·유니콘 등)',
   voices_premium: '재미있는 TTS 목소리 전체',
   super_gift: '초대형 선물 연출',
   layout: '오버레이 배치 · 전체 위젯 링크',
@@ -23,9 +22,9 @@ export const DEFAULT_PLANS = {
   defaultPlan: 'beta',
   plans: [
     { id: 'beta', name: '베타', price: '0원', period: '', desc: '지인 베타 · 모든 기능 전부 무료', badge: '지금 무료', visible: true, highlight: true,
-      features: { pets_premium: true, voices_premium: true, super_gift: true, layout: true, cloud_save: true } },
+      features: { voices_premium: true, super_gift: true, layout: true, cloud_save: true } },
     { id: 'pro', name: '프로', price: '정식 출시 후 공개', period: '', desc: '정식 버전에서 안내할게요', badge: '준비중', visible: false,
-      features: { pets_premium: true, voices_premium: true, super_gift: true, layout: true, cloud_save: true } },
+      features: { voices_premium: true, super_gift: true, layout: true, cloud_save: true } },
   ],
 };
 export const DEFAULT_SITE = { inviteOnly: true, allowSignup: true, notice: '' };
