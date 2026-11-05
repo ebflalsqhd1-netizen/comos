@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CCOMOS · 틱톡 라이브 자막·효과음·3D 성장펫</title>
-<meta name="description" content="틱톡 라이브 실시간 자막 번역, 댓글 읽어주기 20가지 목소리, 선물 효과음과 초대형 선물 연출, 3D 성장펫, 오버레이 배치까지 한 번에. 지인 초대제 베타.">
+<title>CCOMOS · 틱톡 라이브 자막·번역·위젯 · 전부 무료</title>
+<meta name="description" content="틱톡 라이브 실시간 자막 번역, 댓글 읽어주기 20가지 목소리, 선물 효과음과 초대형 선물 연출, 선물 유성우, 방송 리포트, 오버레이 배치까지 한 번에. 결제 없이 전부 무료. 지인 초대제 베타.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23F2CE7C'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%23111'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -84,17 +84,6 @@
   .shot .meta { padding: 14px 16px 16px; }
   .shot .meta b { display: block; }
   .shot .meta span { color: var(--muted); font-size: 13px; }
-  /* 펫 */
-  .pets { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 12px; }
-  .pet { background: radial-gradient(circle at 50% 65%, #232338, #13131d 70%); border: 1px solid var(--line); border-radius: 18px; padding: 12px 8px 10px; text-align: center; position: relative; }
-  .pet img { width: 100%; aspect-ratio: 1; object-fit: contain; filter: drop-shadow(0 8px 10px rgba(0,0,0,.45)); transition: transform .25s; }
-  .pet:hover img { transform: translateY(-4px) scale(1.06) rotate(-2deg); }
-  .pet b { font-size: 13.5px; }
-  .pet .tag { position: absolute; left: 8px; top: 8px; font-size: 10px; font-weight: 900; padding: 1px 6px; border-radius: 6px; background: var(--g); color: #1d1405; }
-  .stages { display: flex; align-items: end; justify-content: center; gap: 10px; margin-top: 26px; flex-wrap: wrap; }
-  .stages div { text-align: center; color: var(--muted); font-weight: 800; font-size: 13px; }
-  .stages img { display: block; height: 150px; object-fit: contain; filter: drop-shadow(0 10px 14px rgba(0,0,0,.5)); }
-  .stages .ar { font-size: 26px; color: #444460; align-self: center; }
   /* 목소리 */
   .voices { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
   .voice { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 14px; background: var(--card); border: 1px solid var(--line); }
@@ -154,9 +143,8 @@
     .panel .btn.big { white-space: normal; max-width: 100%; }
     .g4, .voices { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .g3 { grid-template-columns: 1fr; }
-    .pets { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   }
-  @media (max-width: 520px) { .g4, .voices { grid-template-columns: 1fr; } .stages img { height: 90px; } .nav .btn { padding: 8px 12px; } #hdr-name, #hdr-status { display: none; } #hdr-app:not([hidden]) ~ #btn-out { display: none; } .nav { gap: 10px; } .logo small { display: none; } }
+  @media (max-width: 520px) { .g4, .voices { grid-template-columns: 1fr; } .nav .btn { padding: 8px 12px; } #hdr-name, #hdr-status { display: none; } #hdr-app:not([hidden]) ~ #btn-out { display: none; } .nav { gap: 10px; } .logo small { display: none; } }
 </style>
 </head>
 <body>
@@ -165,7 +153,7 @@
   <div class="wrap nav">
     <a class="logo" href="#"><i></i>CCOMOS <small>BETA</small></a>
     <nav class="menu">
-      <a href="#features">기능</a><a href="#overlays">오버레이</a><a href="#pets">3D 성장펫</a><a href="#voices">TTS 목소리</a><a href="#plans">요금제</a><a href="#join">가입·다운로드</a><a href="#faq">자주 묻는 질문</a>
+      <a href="#features">기능</a><a href="#overlays">오버레이</a><a href="#voices">TTS 목소리</a><a href="#plans">무료</a><a href="#join">가입·다운로드</a><a href="#faq">자주 묻는 질문</a>
     </nav>
     <span class="sp"></span>
     <div id="hdr-out" style="display:flex;gap:8px"><button class="btn" id="btn-login">로그인</button><button class="btn pri" data-go-join>가입 신청</button></div>
@@ -176,13 +164,13 @@
 <section class="hero">
   <div class="wrap">
     <div>
-      <span class="badge"><b></b>지인 초대제 베타 · 지금은 전부 무료</span>
+      <span class="badge"><b></b>지인 초대제 베타 · 결제 없이 전부 무료</span>
       <h1>틱톡 라이브를<br><span class="gt">한 화면에서 전부.</span></h1>
-      <p class="lead">실시간 자막 번역, 20가지 목소리 댓글 읽어주기, 선물 효과음과 <b>1500코인 초대형 선물 연출</b>, 알에서 깨어나는 <b>3D 성장펫</b>, 끌어다 놓는 <b>오버레이 배치</b>까지. 내 PC에서 돌아가는 방송 도구예요.</p>
+      <p class="lead">실시간 자막 번역, 20가지 목소리 댓글 읽어주기, 선물 효과음과 <b>1500코인 초대형 선물 연출</b>, 별똥별처럼 쌓이는 <b>선물 유성우</b>, 방송이 끝나면 저절로 남는 <b>방송 리포트</b>, 끌어다 놓는 <b>오버레이 배치</b>까지. 내 PC에서 돌아가는 방송 도구예요.</p>
       <div class="cta"><button class="btn pri big" data-go-join>가입 신청하기 →</button><a class="btn big" href="#features">기능 둘러보기</a></div>
       <div class="stats">
-        <div><b>16종</b><span>방송 위젯</span></div>
-        <div><b id="st-pets">16종</b><span>3D 성장펫</span></div>
+        <div><b>30종</b><span>방송 위젯</span></div>
+        <div><b>0원</b><span>결제·구독 없음</span></div>
         <div><b>20+</b><span>TTS 목소리</span></div>
         <div><b>19종</b><span>고급 효과음</span></div>
       </div>
@@ -205,14 +193,6 @@
   </div>
 </section>
 
-<section id="pets">
-  <div class="wrap">
-    <div class="sh"><div><div class="kicker">3D GROWTH PET</div><h2>선물로 키우는 3D 성장펫</h2><p>알 → 아기 → 꼬마 → 왕. 숨 쉬고, 눈 깜빡이고, 꼬리 흔들고, 선물을 받아먹어요.</p></div></div>
-    <div class="pets" id="pet-grid"></div>
-    <div class="stages" id="stage-strip"></div>
-  </div>
-</section>
-
 <section id="voices" style="background:var(--bg2)">
   <div class="wrap">
     <div class="sh"><div><div class="kicker">TTS VOICES</div><h2>댓글 읽어주기 목소리</h2><p>시청자마다 다른 목소리로 읽어주기, 외국어 댓글은 원어민 목소리로. ▶ 눌러서 들어보세요.</p></div></div>
@@ -222,8 +202,10 @@
 
 <section id="plans">
   <div class="wrap">
-    <div class="sh"><div><div class="kicker">PRICING</div><h2>요금제</h2><p>지금은 지인 베타라 <b>모든 기능이 전부 무료</b>예요. 승인만 받으면 아래 기능을 전부 쓸 수 있어요.</p></div></div>
-    <div class="plans" id="plan-list"></div>
+    <div class="sh"><div><div class="kicker">FREE</div><h2>전부 무료예요</h2><p>결제·구독·체험 시간 제한 없이, 모든 기능을 그냥 써요. 카드 등록도 없어요.</p></div></div>
+    <div class="plans"><div class="plan hl"><div class="nm">CCOMOS<span class="bd">무료</span></div><div class="pr">0원<small> · 계속</small></div><div class="ds">자막·번역부터 선물 위젯, 방송 리포트까지 전부 열려 있어요.</div>
+      <ul><li>실시간 자막·댓글 번역</li><li>댓글 읽어주기 20가지 목소리</li><li>선물 효과음·알림·초대형 선물 연출</li><li>선물 유성우·좋아요 순위·탑 기프터 테마</li><li>목표 5가지 모양 · 방송 리포트</li><li>오버레이 배치 · 위젯 10개 언어</li></ul></div></div>
+    <div id="plan-list" hidden></div>
   </div>
 </section>
 
@@ -249,7 +231,7 @@
     <details><summary>어떤 컴퓨터에서 되나요?</summary><p>Windows 10/11 PC에서 OBS 또는 TikTok LIVE Studio와 함께 써요. 실시간 자막(음성 인식)은 크롬 브라우저가 필요해요.</p></details>
     <details><summary>OBS에 어떻게 넣나요?</summary><p>대시보드 [오버레이 배치]에서 쓸 위젯을 켜고 자리를 잡은 뒤, 「전체 위젯 링크」를 복사해서 OBS 브라우저 소스(세로 1080×1920 / 가로 1920×1080)에 붙여넣으면 끝이에요.</p></details>
     <details><summary>초대형 선물 연출은 뭔가요?</summary><p>한 사람이 한 번에(콤보 합계) 1500코인 이상 보내면, 화면 전체에 빛·금화·폭죽이 터지고 보낸 사람 닉네임이 크게 나와요. 기준 코인과 문구는 바꿀 수 있어요. 1만 코인 이상은 무지개빛 레전드 연출이에요.</p></details>
-    <details><summary>돈을 내야 하나요?</summary><p>아니요. 지금은 지인 베타라 <b>모든 기능이 전부 무료</b>예요. 승인만 받으면 펫·목소리·초대형 선물 연출까지 전부 쓸 수 있어요.</p></details>
+    <details><summary>돈을 내야 하나요?</summary><p>아니요. 결제도 구독도 없어요. 모든 기능을 무료로 써요.</p></details>
   </div>
 </section>
 
@@ -273,10 +255,12 @@ const FEATS = [
   ['🎬', '영상 도네이션', '선물 + 유튜브 링크로 방송 화면에 영상. 홈페이지 신청도.', 1],
   ['🍴', '먹어 · 먹지마', '지정 선물로 자동 카운트다운. 먹지마 오면 멈춤!', 1],
   ['💥', '초대형 선물 연출', '1500코인 이상이면 화면 전체 폭발 + 닉네임 크게.', 1],
-  ['🐣', '3D 성장펫', '선물로 알이 깨고 진화. 드래곤·백호·유니콘까지 16종.', 1],
+  ['☄️', '선물 유성우', '선물이 별똥별처럼 떨어져 쌓이고, 큰 선물은 금빛 충격파로 전부 튀어 올라요.', 1],
+  ['❤️', '좋아요 순위', '하트 많이 누른 시청자를 하트 레이스 막대로. 순위가 바뀌면 스르륵.', 1],
+  ['📊', '방송 리포트', '방송마다 시청자·좋아요·코인·탑 기프터·댓글 언어가 저절로 저장돼요.', 1],
   ['🧩', '오버레이 배치', '휴대폰 화면 위에서 끌어다 놓고, 링크 하나로 OBS 끝.', 1],
-  ['👑', 'MVP · TOP GIFT', '이번 방송 선물 순위와 최고 선물, 선물 기록.'],
-  ['🎯', '목표 바', '좋아요·코인·팔로우 목표, 달성하면 자동으로 다음 목표.'],
+  ['👑', 'MVP · TOP GIFT', '선물 순위와 최고 선물, 선물 기록. 탑 기프터는 네온·골드·오로라 테마.'],
+  ['🎯', '목표 바', '막대·원형·게이지·숫자·유리병 5가지 모양 + 글꼴 5가지. 달성하면 자동으로 다음 목표.', 1],
   ['📢', '전광판 · 타이머', '흐르는 공지, 선물로 늘어나는 타이머.'],
   ['🫙', '선물 항아리', '받은 선물 그림이 떨어져 쌓이고, 비쌀수록 크게 · 가득 차면 넘쳐요.', 1],
   ['🎞️', '받은 선물 돌려보기', '받은 선물을 하나씩 크게, 자동으로 넘기며 보여줘요.', 1],
@@ -287,16 +271,10 @@ const FEATS = [
 $('#feat-grid').innerHTML = FEATS.map(([ic, t, d, n]) => `<div class="card feat"><div class="ic">${ic}</div><h3>${t}${n ? '<span class="new">NEW</span>' : ''}</h3><p>${d}</p></div>`).join('');
 
 // ── 오버레이 갤러리 ──
-const SHOTS = [['supergift', '초대형 선물 연출', '1500코인 이상 · 화면 전체 + 닉네임'], ['pet', '3D 성장펫', '숨쉬기·깜빡임·진화 연출'], ['layout', '오버레이 배치', '끌어서 옮기고 크기 조절'],
+const SHOTS = [['supergift', '초대형 선물 연출', '1500코인 이상 · 화면 전체 + 닉네임'], ['layout', '오버레이 배치', '끌어서 옮기고 크기 조절'],
   ['alerts', '선물 알림', '콤보 숫자가 실시간으로'], ['rank', 'MVP 순위', '선물 많이 준 순서'], ['captions', '실시간 자막', '최대 3개 언어'],
   ['goal', '목표 바', '자동으로 다음 목표'], ['jar', '선물 항아리', '물리 엔진으로 쌓이는 선물'], ['chat', '댓글 번역 창', '원문 + 번역']];
 $('#shots').innerHTML = SHOTS.map(([k, t, d]) => `<div class="card shot"><div class="pv"><img src="shot-${k}.webp" alt="${t}" loading="lazy" onerror="this.parentElement.innerHTML='<span style=color:#55556e>미리보기 준비중</span>'"></div><div class="meta"><b>${t}</b><span>${d}</span></div></div>`).join('');
-
-// ── 펫 ──
-const PETS = [['dog', '강아지'], ['shiba', '시바견'], ['maltese', '말티즈'], ['pome', '포메라니안'], ['cat', '고양이'], ['rabbit', '토끼'], ['hamster', '햄스터'], ['bear', '곰'],
-  ['dragon', '드래곤', 1], ['whitetiger', '백호', 1], ['unicorn', '유니콘', 1], ['phoenix', '불사조', 1], ['gumiho', '구미호', 1], ['lion', '사자', 1], ['panda', '판다', 1], ['penguin', '펭귄', 1]];
-$('#pet-grid').innerHTML = PETS.map(([k, n, p]) => `<div class="pet">${p ? '<span class="tag">신비</span>' : ''}<img src="pet-${k}_1.webp" alt="${n}" loading="lazy" onerror="this.closest('.pet').remove()"><b>${n}</b></div>`).join('');
-$('#stage-strip').innerHTML = [['0', '알'], ['1', '아기'], ['2', '꼬마'], ['3', '왕']].map(([s, n], i) => `${i ? '<span class="ar">›</span>' : ''}<div><img src="pet-dragon_${s}.webp" onerror="this.onerror=null;this.src='pet-dog_${s}.webp'" alt="${n}">${n}</div>`).join('');
 
 // ── 목소리 ──
 const VOICES = [['sunhi', '선희', '밝고 또렷한 여성'], ['injoon', '인준', '차분한 남성'], ['hyunsu', '현수', '부드러운 남성'], ['baby', '아기', '앙증맞은 아기', 1], ['squirrel', '다람쥐', '높고 빠른 만화', 1],
@@ -319,7 +297,7 @@ function renderPlans(cfg) {
   $('#plan-list').innerHTML = plans.map((p) => `<div class="plan ${p.highlight ? 'hl' : ''}">
     <div class="nm">${esc(p.name)}${p.badge ? `<span class="bd">${esc(p.badge)}</span>` : ''}</div>
     <div class="pr">${esc(p.price || '')}<small>${esc(p.period || '')}</small></div><div class="ds">${esc(p.desc || '')}</div>
-    <ul><li>실시간 자막·댓글 번역</li><li>선물 효과음·알림·MVP·목표 바</li><li>3D 성장펫 기본 8종</li>${Object.entries(FEATURES).map(([k, t]) => `<li class="${p.features?.[k] ? '' : 'no'}">${t}</li>`).join('')}</ul></div>`).join('');
+    <ul><li>실시간 자막·댓글 번역</li><li>선물 효과음·알림·MVP·목표 바</li>${Object.entries(FEATURES).map(([k, t]) => `<li class="${p.features?.[k] ? '' : 'no'}">${t}</li>`).join('')}</ul></div>`).join('');
 }
 renderPlans(DEFAULT_PLANS);
 
